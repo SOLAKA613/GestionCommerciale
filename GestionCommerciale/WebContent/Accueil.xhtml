@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+ <h:head>
+    <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
+    <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/all.min-jsf.css" />
+    <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/v4-shims.min-jsf.css" />
+    
+</h:head> 
+<body> 
+<h:form>  
+    
+    
+    <ui:composition template="/WEB-INF/template/template1.xhtml">
+		<ui:define name="header">
+		        		        
+                  <p:megaMenu  style="height: 64px;width: 1363px; margin-left: -3px;color: #aed0ea;">
+                     <p:menuitem value="Login" outcome="Login" icon="fa fa-fw fa-sign-in" style="margin-top: 10px;font-size: 1.5em;margin-left: 1135px;color: #716d6d;"/>
+                     <p:menuitem value="Inscrire" outcome="Ajouter" icon="fa fa-fw fa-user-plus" style="margin-top: 10px;font-size: 1.5em;color: #716d6d;"/>                  
+                  </p:megaMenu>		         		        
+		</ui:define>
+		
+		<ui:define name="content">
+		 
+          
+          <p:galleria effect="slide" panelWidth="1350" panelHeight="400" showCaption="true" effectDuration="1000">
+          <p:graphicImage style="width:1350px" value="/images1/image1.jpg" title="Facilité de paiement de la facture d'achat" alt="Avec nous, vous pouvez payer votre facture d'achat en toute sécurité et en toute simplicité" />
+          <p:graphicImage style="width:1350px" value="/images1/image2.jpg" title="La vitesse d'arrivée de vos marchandises" alt="Vous pouvez obtenir les produits que vous avez achetés dans les plus brefs délais" />
+          <p:graphicImage style="width:1350px" value="/images1/image3.jpg" title="Commande de plusieurs produits" alt="Vous pouvez commander facilement plusieurs produits en même temps " />
+          </p:galleria>         
+        </ui:define>
+        
+	</ui:composition>
+</h:form>
+</body> 
+</html>

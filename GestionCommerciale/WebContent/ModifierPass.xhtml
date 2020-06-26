@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+  
+</h:head> 
+<body> 
+
+<ui:composition template="/WEB-INF/template/template1.xhtml">
+  <ui:define name="content" size="75">
+  
+  
+   <h:form class="form">
+     <p:panel id="panel" header="Modifier Mot de passe" style="margin-left:380px;margin-top: 125px; width:670px; height:250px;">
+ 
+        <h:panelGrid columns="3" cellpadding="5">
+        
+            <p:outputLabel for="password" value="Auncient Mot de passe:" />
+            <p:password id="password" value="#{beanUser.pass}" label="Auncient Mot de passe" required="true">
+                
+               
+            </p:password>
+            <p:message for="password"  />
+            
+            
+            <p:outputLabel for="newPassword" value=" Nouveau Mot de passe" />
+            <p:password id="newPassword" value="#{beanUser.pass2}" label="Nouveau Mot de passe" required="true">
+                <f:validateLength minimum="2" />      
+            </p:password>
+            <p:message for="newPassword"  />
+          
+            
+ 
+            <p:outputLabel for="confmpassword" value="Confirme mot de passe:" />
+            <p:password id="confmpassword" value="#{beanUser.pass3}" label="Confirme mot de passe" required="true">
+                <f:validateLength minimum="2" />             
+            </p:password>
+            <p:message for="confmpassword"  />
+            
+ 
+        </h:panelGrid>
+ 
+        <p:commandButton  value="Enregistrer" update="panel" action="#{beanUser.changePass()}" icon="fas fa-check" style="font-size: 1.3em;margin-left:9px; margin-top:15px" />
+    </p:panel>
+   </h:form>
+   
+  </ui:define>
+ </ui:composition> 
+</body> 
+</html>

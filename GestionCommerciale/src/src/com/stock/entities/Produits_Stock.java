@@ -40,18 +40,15 @@ public class Produits_Stock {
 	
 	public Produits_Stock() {
 		super();
-	}
+	}  
 
-	
-	public Produits_Stock(int codePdt, int qtePdt, String nomPdt, String descPdt, int prixPdt,
-			List<Produits_Approvisionnement> produits_approvisionnement) {
+	public Produits_Stock(int codePdt, int qtePdt, String nomPdt, String descPdt, int prixPdt) {
 		super();
 		this.codePdt = codePdt;
 		this.qtePdt = qtePdt;
 		this.nomPdt = nomPdt;
 		this.descPdt = descPdt;
 		this.prixPdt = prixPdt;
-		this.produits_approvisionnement = produits_approvisionnement;
 	}
 
 

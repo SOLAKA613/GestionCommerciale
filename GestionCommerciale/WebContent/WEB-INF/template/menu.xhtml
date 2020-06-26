@@ -9,21 +9,21 @@
 <body>
 
 	<ui:composition>
-		<h:form>
+		<h:form >
 			<p:panelMenu>
 				<p:submenu label="Client">
 					<p:menuitem value="Liste des clients" action="listclient"/>
-					<p:menuitem value="Statistiques" />
+					<p:menuitem value="Statistiques" icon="pi pi-chart-line" />
 				</p:submenu>
 
 				<p:submenu label="Article">
 					<p:menuitem value="Liste des articles" action="listarticles" />
-					<p:menuitem value="Statistiques" />
+					<p:menuitem value="Statistiques" icon="pi pi-chart-line"/>
 				</p:submenu>
 
 				<p:submenu label="Representant">
 					<p:menuitem value="Liste des representants" action="listrepresentant"/>
-					<p:menuitem value="Statistiques" />
+					<p:menuitem value="Statistiques" icon="pi pi-chart-line"/>
 				</p:submenu>
 
 				<p:submenu label="Region">
@@ -34,8 +34,8 @@
 				<p:submenu label="Commande">
 					<p:menuitem value="Liste des commandes" action="listcommande"/>
 					<p:menuitem value="Ajouter une commande" />
-					<p:menuitem value="Calendrier des commandes" />
-					<p:menuitem value="Statistiques" />
+					<p:menuitem value="Calendrier des commandes" action="calendriercom"/>
+					<p:menuitem value="Statistiques" icon="pi pi-chart-line"/>
 				</p:submenu>
 			</p:panelMenu>
 		</h:form>

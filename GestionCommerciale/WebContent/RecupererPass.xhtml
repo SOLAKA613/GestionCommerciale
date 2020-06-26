@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+</h:head> 
+<body>
+<ui:composition template="/WEB-INF/template/template1.xhtml">
+  <ui:define name="content" size="75"> 
+	<h:form class="form" >
+      <p:panel id="panel" header="recuperer password" style="margin-left:450px;margin-top: 125px;width:500px;" >
+ 
+        <p:messages id="msgs" />
+ 
+        <h:panelGrid columns="3" cellpadding="5" >
+       
+        
+            <p:outputLabel for="email" value="Votre email:" />
+            <p:inputText id="email" value="#{beanUser.email}" required="true" label="Email" style="width:200px;margin-left:57px;margin-top:10px">
+                <f:validateLength minimum="2" />
+                
+                <f:validateRegex pattern="([^.@]+)(\.[^.@]+)*@([^.@]+\.)+([^.@]+)" />               
+            </p:inputText>
+            
+        </h:panelGrid>
+ 
+        <p:commandButton value="Enregistrer"  update="panel" action="#{beanUser.RecupererPass()}" icon="fas fa-check" style="margin:auto;width:100px"/>
+    </p:panel>
+   </h:form>
+  </ui:define>
+</ui:composition> 
+</body> 
+</html>

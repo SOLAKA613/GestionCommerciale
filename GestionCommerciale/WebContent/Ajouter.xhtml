@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+<style type="text/css">
+   body{
+   height:800px;
+   }
+    .form {       
+       text-align:center; 
+       width:500px;
+       margin:auto;
+       margin-top:50px;
+   }
+   
+</style> 
+
+</h:head> 
+<body> 
+
+
+ <ui:composition template="/WEB-INF/template/template1.xhtml">
+  <ui:define name="content" size="75">
+   <h:form  class="form" >
+    <p:panel id="panel" header="Ajouter un utilisateur" style="width: 751px;margin-left: 293px;height:470px;">
+ 
+ 
+        <h:panelGrid columns="3" cellpadding="5" style="margin-top:30px">
+        
+            <p:outputLabel for="name" value="Nom:"  />
+            <p:inputText id="name" value="#{beanUser.newUser.firstname}" required="true" label="Firstname" style="width:200px;margin-left:57px;margin-top:10px">
+                <p:keyFilter regEx="/[a-z_]/i"/>
+                <f:validateLength minimum="2" />
+                <p:ajax update="name" event="keyup" />
+            </p:inputText>
+            <p:message for="name" />
+            
+            <p:outputLabel for="prenom" value="Prenom:" />
+            <p:inputText id="prenom" value="#{beanUser.newUser.lastname}" required="true" label="Firstname" style="width:200px;margin-left:57px;margin-top:10px">
+                <f:validateLength minimum="2" />
+                <p:keyFilter regEx="/[a-z_]/i"/>
+              <p:ajax update="prenom" event="keyup" />
+            </p:inputText>
+            <p:message for="prenom" />
+            
+            <p:outputLabel for="username" value="Nom d'utilisateur:" />
+            <p:inputText id="username" value="#{beanUser.newUser.login}" required="true" label="Nom d'utilisateur" style="width:200px;margin-left:57px;margin-top:10px">
+                <f:validateLength minimum="2" />
+                <p:keyFilter regEx="/[a-z0-9_]/i"/>
+                <p:ajax update="usernamee"  event="keyup" />
+            </p:inputText>
+            <p:message for="username" id="usernamee" />
+            
+            <p:outputLabel for="email" value="Email:" />
+            <p:inputText id="email" value="#{beanUser.newUser.email}" required="true" label="Email" style="width:200px;margin-left:57px;margin-top:10px">
+                <f:validateLength minimum="5" />
+                <p:keyFilter regEx="/[a-z0-9_\.\-@]/i"/>  
+                <f:validateRegex pattern="([^.@]+)(\.[^.@]+)*@([^.@]+\.)+([^.@]+)" />
+                <p:ajax update="email" event="keyup" />
+            </p:inputText>
+            <p:message for="email"  />
+            
+            <p:outputLabel for="tele" value="Telephone:" />
+            <p:inputText id="tele" value="#{beanUser.newUser.phone}" required="true" label="Telephone" style="width:200px;margin-left:57px;margin-top:10px">
+                <f:validateLength minimum="7" />
+                <f:validateLength maximum="10" />
+                <p:keyFilter regEx="/[\d\-]/"/>
+                <p:ajax update="telew" event="keyup" />
+            </p:inputText>
+            <p:message for="tele" id="telew" />
+ 
+            <p:outputLabel for="password" value="Mot de passe:" />
+            <p:password id="password" value="#{beanUser.newUser.pass}" label="Password" required="true" style="width:200px;margin-left:57px;margin-top:10px">
+                <f:validateLength minimum="2" />
+                <p:ajax update="msgPass" event="keyup" />
+            </p:password>
+            <p:message for="password" id="msgPass" />
+ 
+        </h:panelGrid>
+ 
+        <p:commandButton value="Enregistrer" update="panel" action="#{beanUser.save()}" icon="fas fa-check" style="width:125px;margin-left:0px;margin-top:20px"  />
+    </p:panel>
+    
+   </h:form>
+  </ui:define>
+ </ui:composition>
+</body> 
+</html>

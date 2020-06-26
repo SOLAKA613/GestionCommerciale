@@ -41,14 +41,20 @@ public class Commandes {
 	public Commandes() {
 		super();
 	}
+    
+	public Commandes(Produits_Prix produits_prix) {
+		super();
+		this.produits_prix = produits_prix;
+	}
 
-	
-	public Commandes(int codeCmd, String client, int qteCmd, Date dateCmd) {
+
+	public Commandes(int codeCmd, String client, int qteCmd, Date dateCmd, Produits_Prix produits_prix) {
 		super();
 		this.codeCmd = codeCmd;
 		this.client = client;
 		this.qteCmd = qteCmd;
 		this.dateCmd = dateCmd;
+		this.produits_prix = produits_prix;
 	}
 
 
@@ -92,6 +98,11 @@ public class Commandes {
 	public void setProduits_prix(Produits_Prix produits_prix) {
 		this.produits_prix = produits_prix;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Commandes [codeCmd=" + codeCmd + ", client=" + client + ", qteCmd=" + qteCmd + ", dateCmd=" + dateCmd
+				+ "]";
+	}
 	
 }	

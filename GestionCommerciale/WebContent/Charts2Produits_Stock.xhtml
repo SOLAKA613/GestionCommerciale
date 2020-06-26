@@ -5,14 +5,22 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"> 
 
-<h:head></h:head> 
+<h:head>
+
+ 
+</h:head> 
 <body> 
 
-	<ui:composition>
-		<f:facet name="header">
-			<img src="images/logo.png" />
-		</f:facet>
+     <ui:composition template="/WEB-INF/template/template.xhtml">
+		<ui:define name="content">
+		  <h:form id="form">
+           
+           
+              <p:donutChart model="#{beanProduits_Stock.donutModel}" style="width: 100%; height: 650px;"/>
+           
+		  </h:form>
+		</ui:define>
 	</ui:composition>
-	
+
 </body> 
 </html>

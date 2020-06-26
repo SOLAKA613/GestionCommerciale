@@ -85,4 +85,11 @@ public class Produits_Prix {
 		this.commandes = commandes;
 	}
 
+	@Override
+	public String toString() {
+		return "Produits_Prix [codePdt=" + codePdt + ", nomPdt=" + nomPdt + ", descPdt=" + descPdt + ", prixPdt="
+				+ prixPdt +"]";
+	}
+
+	
 }

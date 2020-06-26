@@ -39,9 +39,16 @@ public class Produits_Approvisionnement {
 	public Produits_Approvisionnement() {
 		super();
 	}
+	
+	
 
-	public Produits_Approvisionnement(int codePdtApp,int codePdt, int qteCommandé, Date datePrevueLivraison,
-			Produits_Stock produits_stock) {
+	public Produits_Approvisionnement(Produits_Stock produits_stock) {
+		super();
+		this.produits_stock = produits_stock;
+	}
+	
+	
+	public Produits_Approvisionnement(int codePdtApp, int qteCommandé, Date datePrevueLivraison,Produits_Stock produits_stock) {
 		super();
 		this.codePdtApp=codePdtApp;
 		this.qteCommandé = qteCommandé;
@@ -53,7 +60,6 @@ public class Produits_Approvisionnement {
 	public int getCodePdtApp() {
 		return codePdtApp;
 	}
-
 	public void setCodePdtApp(int codePdtApp) {
 		this.codePdtApp = codePdtApp;
 	}
@@ -61,7 +67,6 @@ public class Produits_Approvisionnement {
 	public int getQteCommandé() {
 		return qteCommandé;
 	}
-
 	public void setQteCommandé(int qteCommandé) {
 		this.qteCommandé = qteCommandé;
 	}
@@ -69,7 +74,6 @@ public class Produits_Approvisionnement {
 	public Date getDatePrevueLivraison() {
 		return datePrevueLivraison;
 	}
-
 	public void setDatePrevueLivraison(Date datePrevueLivraison) {
 		this.datePrevueLivraison = datePrevueLivraison;
 	}
@@ -77,7 +81,6 @@ public class Produits_Approvisionnement {
 	public Produits_Stock getProduits_stock() {
 		return produits_stock;
 	}
-
 	public void setProduits_stock(Produits_Stock produits_stock) {
 		this.produits_stock = produits_stock;
 	}

@@ -5,34 +5,52 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
-<h:head></h:head>
+<h:head>
+ 
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+	<h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
+    <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/all.min-jsf.css" />
+    <h:outputStylesheet library="webjars" name="font-awesome/5.12.0/css/v4-shims.min-jsf.css" />     
+    <style>
+      body {
+	   font-size: 10px;
+	  }
+    </style>     
+</h:head>
 <body>
-	<p:layout fullPage="true">
-		
-		<p:layoutUnit id="top" position="north" size="55">
+	<p:layout fullPage="true" >
+
+		<p:layoutUnit id="top" position="north" size="75">
 			<ui:insert name="header">
-				<ui:include src="/WEB-INF/template/header.xhtml" />
+				<ui:include src="/WEB-INF/template/header.xhtml"  />
 			</ui:insert>
 		</p:layoutUnit>
-		
-		<p:layoutUnit id="bottom" position="south" size="20" style="text-align:center;">
+
+		<p:layoutUnit id="bottom" position="south" size="55"
+			style="text-align:center;">
 			<ui:insert name="footer">
 				<ui:include src="/WEB-INF/template/footer.xhtml" />
 			</ui:insert>
 		</p:layoutUnit>
-		
-		<p:layoutUnit id="left" position="west" size="300" resizable="true" collapsible="true" header="Menu Generale" minSize="200">
+
+		<p:layoutUnit id="left" position="west" size="300" resizable="true"
+			collapsible="true" header="Menu Generale" minSize="200" style="height:50%">
 			<ui:insert name="menu">
 				<ui:include src="/WEB-INF/template/menu.xhtml" />
 			</ui:insert>
 		</p:layoutUnit>
-		
+
 		<p:layoutUnit id="center" position="center" >
 			<ui:insert name="content">
 			</ui:insert>
 		</p:layoutUnit>
-		
+
+       
+	  <script src="../js/popper.min.js"></script>
+	  <script src="../js/bootstrap.min.js"></script>
+
 	</p:layout>
 
+     
 </body>
 </html>

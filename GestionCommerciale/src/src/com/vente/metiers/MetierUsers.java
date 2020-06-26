@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import src.com.vente.dao.IDao;
 import src.com.vente.entities.Users;
 
-@Service
+@Service("metierUsers")
 public class MetierUsers implements IMetier<Users>{
 
 	@Autowired

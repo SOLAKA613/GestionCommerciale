@@ -5,25 +5,21 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"> 
 
-<h:head></h:head> 
+<h:head>
+
+ 
+</h:head> 
 <body> 
 
      <ui:composition template="/WEB-INF/template/template.xhtml">
 		<ui:define name="content">
-			
-			<p:dataTable value="#{beanProduits_Stock.listProduits_Stock}" var="p" paginator="true" rows="10">
-			
-				<f:facet name="header">Liste des produits</f:facet>
-				<p:column headerText="Code de produit">
-					#{p.codePdt}
-				</p:column>
-				
-				<p:column headerText="Quantité existant de produit">
-					#{p.qtePdt}
-				</p:column>				
-		
-								
-			</p:dataTable>
+		  <h:form id="form">
+           
+           
+              <p:barChart model="#{beanProduits_Stock.barModel}" style="width: 100%; height: 500px;"/>
+           
+           
+		  </h:form>
 		</ui:define>
 	</ui:composition>
 

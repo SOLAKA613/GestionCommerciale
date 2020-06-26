@@ -1,43 +1,93 @@
 package src.com.vente.beans;
 
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
+import org.primefaces.PrimeFaces;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ResourceUtils;
 
-
-
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import src.com.stock.entities.Produits_Stock;
+import src.com.stock.entities.Produits_Approvisionnement;
 import src.com.stock.metiers.MetierProduits_Stock;
 import src.com.stock.metiers.IMetier;
+import src.com.stock.metiers.MetierProduits_Approvisionnement;
 import src.com.stock_vente.entities.Produits_StockVente;
 import src.com.vente.entities.Produits_Prix;
+import src.com.vente.entities.Users;
+import src.com.vente.entities.AjouterCommande;
+import src.com.vente.entities.Commandes;
+import src.com.vente.metiers.MetierCommandes;
 import src.com.vente.metiers.MetierProduits_Prix;
+import src.com.vente.metiers.MetierUsers;
 
 @ManagedBean
 @Component
+@RequestScoped
 public class BeanProduits {
 
 	@Autowired
 	@Qualifier(value="metierProduits_Stock")
-	IMetier<Produits_Stock> metierProduits_Stock =new MetierProduits_Stock();
+	IMetier<Produits_Stock> metierProduits_Stock = new MetierProduits_Stock();
 	
 	@Autowired
 	@Qualifier(value="metierProduits_Prix")
-	MetierProduits_Prix metierProduits_Prix=new MetierProduits_Prix();
+	MetierProduits_Prix metierProduits_Prix = new MetierProduits_Prix();
+	
+	@Autowired
+	@Qualifier(value="metierCommandes")
+    MetierCommandes metierCommandes = new MetierCommandes();
+	
+	@Autowired
+	@Qualifier(value="metierUsers")
+	MetierUsers metierUsers = new MetierUsers();
+	
+	@Autowired
+	@Qualifier(value="metierProduits_Approvisionnement")
+	MetierProduits_Approvisionnement metierProduits_Approvisionnement = new MetierProduits_Approvisionnement();
+	
+	private List<Produits_StockVente> selectedProduits;
+	private Map<Commandes,Produits_Approvisionnement> cmdes;
+	private Map<Produits_Stock,Integer> qtePdtStock;
+	private int[] qte1=new int[12];
+	private String username;
+	private String password;
+	private List<AjouterCommande> AddCommande;
 	
 	public List<Produits_StockVente> getListProduits() {
 		
 		List<Produits_StockVente> listProduits=new ArrayList<Produits_StockVente>();
         List<Produits_Stock> listPdtStock= metierProduits_Stock.findAll();
         List<Produits_Prix> listPdtPrix= metierProduits_Prix.findAll();
-		
+        
 		for(Produits_Stock prdStock: listPdtStock) {
 			for(Produits_Prix prdPrix: listPdtPrix)  {
 				if(prdStock.getCodePdt()==prdPrix.getCodePdt()) {
@@ -48,7 +98,164 @@ public class BeanProduits {
 		}
 		
 		return listProduits;
+	}
+
+	public List<Produits_StockVente> getSelectedProduits() {
+		return selectedProduits;
+	}
+	public void setSelectedProduits(List<Produits_StockVente> selectedProduits) {
+		this.selectedProduits = selectedProduits;
+	}
+
+	public Map<Commandes, Produits_Approvisionnement> getCmdes() {
+		return cmdes;
+	}
+	public void setCmdes(Map<Commandes, Produits_Approvisionnement> cmdes) {
+		this.cmdes = cmdes;
+	}
+	
+	public Map<Produits_Stock, Integer> getQtePdtStock() {
+		return qtePdtStock;
+	}
+	public void setQtePdtStock(Map<Produits_Stock, Integer> qtePdtStock) {
+		this.qtePdtStock = qtePdtStock;
+	}
+
+	public int[] getQte1() {
+		return qte1;
+	}
+	public void setQte1(int[] qte1) {
+		this.qte1 = qte1;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
 	}	
+
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	public List<AjouterCommande> getAddCommande() {
+		return AddCommande;
+	}
+	public void setAddCommande(List<AjouterCommande> addCommande) {
+		AddCommande = addCommande;
+	}
+
+	public void buttonAction() {
+		     if(selectedProduits.size()==0) {
+	        	addMessage("Aucun produit sélectionné!!");	
+	        	PrimeFaces.current().executeScript("PF('multiProduitDialog').hide()");
+		     }else {
+		    	PrimeFaces.current().executeScript("PF('multiProduitDialog').show()"); 
+		     }  
+		     
+	}
+	
+	public void commander() {
+		  
+		  Map<Commandes,Produits_Approvisionnement> hashcmde = new  HashMap<Commandes,Produits_Approvisionnement>();
+		  Map<Produits_Stock,Integer> pdtStock=new HashMap<Produits_Stock,Integer>();
+		  int i=0;
+		  
+		  for(Produits_StockVente ps:selectedProduits) {
+
+			  hashcmde.put(new Commandes(0,username,qte1[i],java.sql.Date.valueOf(LocalDate.now()),ps.getProduitsPrix()),
+				new Produits_Approvisionnement(0,qte1[i],java.sql.Date.valueOf(LocalDate.now().plusMonths(1)),ps.getProduitStock()));
+			  pdtStock.put(ps.getProduitStock(), qte1[i]);
+			  i++;
+		  }
+		  
+		  setQtePdtStock(pdtStock);
+		  setCmdes(hashcmde);
+		  PrimeFaces.current().executeScript("PF('dlg').show()");
+	}
 	
 	
+	public void Enregistrer() throws FileNotFoundException, JRException {
+		int j=0;
+		List<AjouterCommande> AjComm = new ArrayList<AjouterCommande>();
+		
+		
+		for(Users us:metierUsers.findAll()) {
+			if(username.toLowerCase().equals(us.getLogin().toLowerCase()) && password.equals(us.getPass())) {
+				
+				setPassword(null);
+				setUsername(null);
+				for (Map.Entry<Commandes, Produits_Approvisionnement> pair: getCmdes().entrySet()) {
+					if(metierCommandes.create(pair.getKey()) && metierProduits_Approvisionnement.create(pair.getValue())) {
+						AjComm.add(new AjouterCommande(pair.getKey().getProduits_prix().getCodePdt(),pair.getKey().getProduits_prix().getNomPdt(),
+						pair.getKey().getProduits_prix().getPrixPdt(),pair.getKey().getQteCmd(),pair.getKey().getQteCmd()*pair.getKey().getProduits_prix().getPrixPdt()));
+						continue;
+					}else {
+						for (Map.Entry<Commandes, Produits_Approvisionnement> pair1: getCmdes().entrySet()) {
+							metierCommandes.delete(pair1.getKey());
+							metierProduits_Approvisionnement.delete(pair1.getValue());
+						};
+						j=1;
+						addMessage("Erreur.L'opération n'est pas effectué avec succès.");
+						break;
+					}
+				}
+				if(j == 0) {
+					for (Map.Entry<Produits_Stock, Integer> pairStock: getQtePdtStock().entrySet()) {
+						
+						Produits_Stock pp1=pairStock.getKey();
+						Produits_Stock pp=new Produits_Stock(pp1.getCodePdt(),pp1.getQtePdt()-pairStock.getValue(),pp1.getNomPdt(),pp1.getDescPdt(),pp1.getPrixPdt());
+						
+						if(metierProduits_Stock.update(pp)) {
+							continue;
+						}else {
+							for (Map.Entry<Produits_Stock, Integer> pairStock1: getQtePdtStock().entrySet()) {
+								metierProduits_Stock.update(pairStock1.getKey());
+							}
+							addMessage("Erreur.L'opération n'est pas effectué avec succès.");
+							j=1;
+							break;
+						}
+					}
+					
+				}
+				if(j == 0) {
+					setAddCommande(AjComm);
+				}
+				
+				addMessageSucces("Votre opération s'est terminée avec succès.Vos articles vous parviendra dans 30 jours");
+				break;
+			}else {
+				addMessage("Votre password ou username est incorrect");
+			}		
+		}		
+	}
+	 
+	public void DownloadFile() throws JRException, IOException {		
+		JRDataSource jrDataSource = new JRBeanCollectionDataSource(getAddCommande());
+	    String jrXmlFile = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/report/Produits.jrxml");
+	    InputStream  input = new FileInputStream(new File(jrXmlFile));
+	    JasperReport jasperReport = JasperCompileManager.compileReport(input);
+	    Map<String,Object> params = new HashMap<String,Object>();
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,params, jrDataSource);
+	    HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+	    response.addHeader("content-disposition","attachement; filename=commande.pdf");
+        ServletOutputStream servletOutputStream = response.getOutputStream();
+	    JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
+	    FacesContext.getCurrentInstance().responseComplete();
+	}
+	
+	public void addMessage(String summary) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+	
+	public void addMessageSucces(String summary) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
 }
