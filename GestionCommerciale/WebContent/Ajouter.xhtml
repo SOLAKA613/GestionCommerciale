@@ -26,9 +26,10 @@
  <ui:composition template="/WEB-INF/template/template1.xhtml">
   <ui:define name="content" size="75">
    <h:form  class="form" >
-    <p:panel id="panel" header="Ajouter un utilisateur" style="width: 751px;margin-left: 293px;height:470px;">
+    <p:panel id="panel" header="Ajouter un utilisateur" style="width: 751px;margin-left: 153px;height:470px;">
  
- 
+        <p:messages id="msgs" />
+        
         <h:panelGrid columns="3" cellpadding="5" style="margin-top:30px">
         
             <p:outputLabel for="name" value="Nom:"  />
@@ -74,7 +75,7 @@
             <p:message for="tele" id="telew" />
  
             <p:outputLabel for="password" value="Mot de passe:" />
-            <p:password id="password" value="#{beanUser.newUser.pass}" label="Password" required="true" style="width:200px;margin-left:57px;margin-top:10px">
+            <p:password id="password" value="#{beanUser.newUser.pass}" feedback="true" inline="true" label="Password" required="true" style="width:200px;margin-left:57px;margin-top:10px">
                 <f:validateLength minimum="2" />
                 <p:ajax update="msgPass" event="keyup" />
             </p:password>

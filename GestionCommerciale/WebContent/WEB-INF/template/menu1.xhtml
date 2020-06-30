@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"> 
+
+<h:head></h:head> 
+<body> 
+     <ui:composition>
+		<h:form >
+			<p:panelMenu>
+			    <p:submenu label="Accueil">
+					<p:menuitem  value="Page d'accueil" action="Accueil" icon="fas fa-home" style="font-size: 1.2em"/>
+				</p:submenu>
+
+				<p:submenu label="Statistiques des produits">
+					<p:menuitem value="Verticale Bar" action="BarChart" icon="fas fa-chart-bar" style="font-size: 1.2em"/>
+					<p:menuitem value="Graphiques - Donut" action="Donut" icon="fas fa-chart-pie" style="font-size: 1.2em"/>
+				</p:submenu>
+
+			</p:panelMenu>
+		</h:form>
+	</ui:composition>
+</body> 
+</html>

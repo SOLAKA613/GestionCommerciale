@@ -12,8 +12,10 @@
 
 	<ui:composition  >
 		
-		  <h:outputText value="#{ sessionScope['login'] }" icon="fa fa-fw fa-sign-in" style="margin-top: 12px;font-size: 1.5em;margin-left: 1048px;color: #716d6d;"/>
-		  <p:commandButton action="#{beanUser.logout()}" value="Deconection" icon="fas fa-sign-out-alt"  style="background-image:none;margin-left: 28px;background-color:#f9fafb;border-color:#f9fafb;margin-top: 12px;font-size: 1.5em;color: #716d6d;"/>
+		  <img src="images1/image5.jpg" style="margin-bottom: -113px;margin-top: -5px;margin-left: 405px;height: 72px;"/>
+		  <img src="images1/profile-user.png" style="height: 34px;margin-left: 950px;margin-bottom: 8px;"/>
+		  <h:outputText value="#{ sessionScope['login'] }" icon="fa fa-fw fa-sign-in" style="margin-top: 15px;margin-left: 10px;font-size: 1.5em;color: #716d6d;"/>
+		  <p:commandButton action="#{beanUser.logout()}" value="Deconection" icon="fas fa-sign-out-alt"  style="background-image:none;margin-left: 28px;background-color:#f9fafb;border-color:#f9fafb;margin-top: 15px;font-size: 1.5em;color: #716d6d;"/>
 		
 	</ui:composition>
 	

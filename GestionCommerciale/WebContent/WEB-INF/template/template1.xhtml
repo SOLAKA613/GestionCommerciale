@@ -33,6 +33,13 @@
 				<ui:include src="/WEB-INF/template/footer.xhtml" />
 			</ui:insert>
 		</p:layoutUnit>
+		
+		<p:layoutUnit id="left" position="west" size="300" resizable="true"
+			collapsible="true" header="Menu Generale" minSize="200" style="height:50%">
+			<ui:insert name="menu">
+				<ui:include src="/WEB-INF/template/menu1.xhtml" />
+			</ui:insert>
+		</p:layoutUnit>
 
 		<p:layoutUnit id="center" position="center" >
 			<ui:insert name="content" >

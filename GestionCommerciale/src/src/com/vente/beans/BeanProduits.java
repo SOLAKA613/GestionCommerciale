@@ -20,6 +20,7 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.primefaces.PrimeFaces;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +76,7 @@ public class BeanProduits {
 	MetierProduits_Approvisionnement metierProduits_Approvisionnement = new MetierProduits_Approvisionnement();
 	
 	private List<Produits_StockVente> selectedProduits;
+	private List<Produits_StockVente> filteredProduits;;
 	private Map<Commandes,Produits_Approvisionnement> cmdes;
 	private Map<Produits_Stock,Integer> qtePdtStock;
 	private int[] qte1=new int[12];
@@ -82,6 +84,7 @@ public class BeanProduits {
 	private String password;
 	private List<AjouterCommande> AddCommande;
 	
+	//Pour Afficher la tableau des produits  
 	public List<Produits_StockVente> getListProduits() {
 		
 		List<Produits_StockVente> listProduits=new ArrayList<Produits_StockVente>();
@@ -105,6 +108,14 @@ public class BeanProduits {
 	}
 	public void setSelectedProduits(List<Produits_StockVente> selectedProduits) {
 		this.selectedProduits = selectedProduits;
+	}
+
+	
+	public List<Produits_StockVente> getFilteredProduits() {
+		return filteredProduits;
+	}
+	public void setFilteredProduits(List<Produits_StockVente> filteredProduits) {
+		this.filteredProduits = filteredProduits;
 	}
 
 	public Map<Commandes, Produits_Approvisionnement> getCmdes() {
@@ -153,21 +164,32 @@ public class BeanProduits {
 		     if(selectedProduits.size()==0) {
 	        	addMessage("Aucun produit sélectionné!!");	
 	        	PrimeFaces.current().executeScript("PF('multiProduitDialog').hide()");
-		     }else {
+		     }
+		     if(selectedProduits.size()>0 && selectedProduits.size()<13){
 		    	PrimeFaces.current().executeScript("PF('multiProduitDialog').show()"); 
 		     }  
+		     if(selectedProduits.size()>13) {
+	        	   addMessage("Vous pouvez commander au maximum 12 produits à la fois");	
+	        	   PrimeFaces.current().executeScript("PF('multiProduitDialog').hide()");
+		     }
 		     
 	}
 	
+	//Pour remplir les commandes dans la table Commandes  
 	public void commander() {
 		  
 		  Map<Commandes,Produits_Approvisionnement> hashcmde = new  HashMap<Commandes,Produits_Approvisionnement>();
 		  Map<Produits_Stock,Integer> pdtStock=new HashMap<Produits_Stock,Integer>();
+		  FacesContext context2 = FacesContext.getCurrentInstance();
+	      HttpSession session = (HttpSession) context2.getExternalContext().getSession(true);
+	      int id =(Integer) session.getAttribute("id");
+	      Users user= metierUsers.findById(id);
+	      String name= user.getFirstname() +" "+ user.getLastname();
 		  int i=0;
 		  
 		  for(Produits_StockVente ps:selectedProduits) {
 
-			  hashcmde.put(new Commandes(0,username,qte1[i],java.sql.Date.valueOf(LocalDate.now()),ps.getProduitsPrix()),
+			  hashcmde.put(new Commandes(0,name,qte1[i],java.sql.Date.valueOf(LocalDate.now()),ps.getProduitsPrix()),
 				new Produits_Approvisionnement(0,qte1[i],java.sql.Date.valueOf(LocalDate.now().plusMonths(1)),ps.getProduitStock()));
 			  pdtStock.put(ps.getProduitStock(), qte1[i]);
 			  i++;
@@ -178,22 +200,38 @@ public class BeanProduits {
 		  PrimeFaces.current().executeScript("PF('dlg').show()");
 	}
 	
-	
+    //Pour Enregistrer les commandes
 	public void Enregistrer() throws FileNotFoundException, JRException {
-		int j=0;
+		int j=0,k=0;
 		List<AjouterCommande> AjComm = new ArrayList<AjouterCommande>();
-		
+		FacesContext context2 = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) context2.getExternalContext().getSession(true);
+        String pass=(String) session.getAttribute("pass");
+        String login1=(String) session.getAttribute("login");
+        String nomUser=username,passUser=password;
+        
+		setPassword(null);//Pour vider le password,pour ne pas le pasword afficher une autre fois dans input
+		setUsername(null);//Pour vider le username,pour ne pas afficher le username une autre fois dans input
 		
 		for(Users us:metierUsers.findAll()) {
-			if(username.toLowerCase().equals(us.getLogin().toLowerCase()) && password.equals(us.getPass())) {
+			
+			if(nomUser.toLowerCase().equals(us.getLogin().toLowerCase()) && passUser.equals(us.getPass())) {
+			   k=1;
+			   break;
+			}
+		}	
+		   if(k==1) {
+			   
+			  if(nomUser.toLowerCase().equals(login1.toLowerCase()) && passUser.equals(pass)) {
 				
-				setPassword(null);
-				setUsername(null);
 				for (Map.Entry<Commandes, Produits_Approvisionnement> pair: getCmdes().entrySet()) {
+					
 					if(metierCommandes.create(pair.getKey()) && metierProduits_Approvisionnement.create(pair.getValue())) {
+						
 						AjComm.add(new AjouterCommande(pair.getKey().getProduits_prix().getCodePdt(),pair.getKey().getProduits_prix().getNomPdt(),
 						pair.getKey().getProduits_prix().getPrixPdt(),pair.getKey().getQteCmd(),pair.getKey().getQteCmd()*pair.getKey().getProduits_prix().getPrixPdt()));
 						continue;
+						
 					}else {
 						for (Map.Entry<Commandes, Produits_Approvisionnement> pair1: getCmdes().entrySet()) {
 							metierCommandes.delete(pair1.getKey());
@@ -228,13 +266,17 @@ public class BeanProduits {
 				}
 				
 				addMessageSucces("Votre opération s'est terminée avec succès.Vos articles vous parviendra dans 30 jours");
-				break;
+				
+			  }else {
+				  addMessage(".Le mot de passe et le nom d'utilisateur que vous avez entrés ne correspondent pas au mot de passe et au nom d'utilisateur avec lesquels vous vous connectez.");
+			  }	
 			}else {
 				addMessage("Votre password ou username est incorrect");
 			}		
-		}		
+				
 	}
-	 
+	
+	//Pour téléchrger le fichier PDF avec l'utilisation de la technologie Jasper Report 
 	public void DownloadFile() throws JRException, IOException {		
 		JRDataSource jrDataSource = new JRBeanCollectionDataSource(getAddCommande());
 	    String jrXmlFile = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/report/Produits.jrxml");
@@ -249,11 +291,13 @@ public class BeanProduits {
 	    FacesContext.getCurrentInstance().responseComplete();
 	}
 	
+	//Afficher message succes
 	public void addMessage(String summary) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 	
+	//Afficher message erreur
 	public void addMessageSucces(String summary) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
         FacesContext.getCurrentInstance().addMessage(null, message);

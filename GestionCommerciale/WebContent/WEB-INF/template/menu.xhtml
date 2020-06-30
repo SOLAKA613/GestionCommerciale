@@ -11,32 +11,21 @@
 	<ui:composition>
 		<h:form >
 			<p:panelMenu>
+			    <p:submenu label="Accueil">
+					<p:menuitem icon="fas fa-home" value="Page d'accueil" action="listProduits" style="font-size: 1.2em"/>
+				</p:submenu>
 				<p:submenu label="Client">
-					<p:menuitem value="Liste des clients" action="listclient"/>
-					<p:menuitem value="Statistiques" icon="pi pi-chart-line" />
+					<p:menuitem icon="fas fa-lock" value="Modifier mot de passe" action="ModifierPass" style="font-size: 1.2em"/>
 				</p:submenu>
 
-				<p:submenu label="Article">
-					<p:menuitem value="Liste des articles" action="listarticles" />
-					<p:menuitem value="Statistiques" icon="pi pi-chart-line"/>
+				<p:submenu label="Statistiques des produits">
+					<p:menuitem value="Verticale Bar" action="ChartsProduits_Stock" icon="fas fa-chart-bar" style="font-size: 1.2em"/>
+					<p:menuitem value="Graphiques - Donut" action="Charts2Produits_Stock" icon="fas fa-chart-pie" style="font-size: 1.2em"/>
 				</p:submenu>
 
-				<p:submenu label="Representant">
-					<p:menuitem value="Liste des representants" action="listrepresentant"/>
-					<p:menuitem value="Statistiques" icon="pi pi-chart-line"/>
-				</p:submenu>
-
-				<p:submenu label="Region">
-					<p:menuitem value="Liste des regions" action="listregion"/>
-					<p:menuitem value="Statistiques" />
-				</p:submenu>
-
-				<p:submenu label="Commande">
-					<p:menuitem value="Liste des commandes" action="listcommande"/>
-					<p:menuitem value="Ajouter une commande" />
-					<p:menuitem value="Calendrier des commandes" action="calendriercom"/>
-					<p:menuitem value="Statistiques" icon="pi pi-chart-line"/>
-				</p:submenu>
+                <p:submenu label="Liste des produits">
+                    <p:menuitem value="Commander des produits" action="tableauProduits" icon="fa fa-fw fa-shopping-cart" style="font-size: 1.2em"/>
+                </p:submenu>
 			</p:panelMenu>
 		</h:form>
 	</ui:composition>

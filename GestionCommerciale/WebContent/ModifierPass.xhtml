@@ -10,17 +10,19 @@
 </h:head> 
 <body> 
 
-<ui:composition template="/WEB-INF/template/template1.xhtml">
+<ui:composition template="/WEB-INF/template/template.xhtml">
   <ui:define name="content" size="75">
   
   
    <h:form class="form">
-     <p:panel id="panel" header="Modifier Mot de passe" style="margin-left:380px;margin-top: 125px; width:670px; height:250px;">
+     <p:panel id="panel" header="Modifier Mot de passe" style="margin-left:190px;margin-top: 125px; width:670px; height:305px;">
  
+       <p:messages id="msgs" />
+       
         <h:panelGrid columns="3" cellpadding="5">
         
             <p:outputLabel for="password" value="Auncient Mot de passe:" />
-            <p:password id="password" value="#{beanUser.pass}" label="Auncient Mot de passe" required="true">
+            <p:password id="password" value="#{beanUser.pass}" feedback="true" inline="true" label="Auncient Mot de passe" required="true">
                 
                
             </p:password>
@@ -28,7 +30,7 @@
             
             
             <p:outputLabel for="newPassword" value=" Nouveau Mot de passe" />
-            <p:password id="newPassword" value="#{beanUser.pass2}" label="Nouveau Mot de passe" required="true">
+            <p:password id="newPassword" value="#{beanUser.pass2}" feedback="true" inline="true" label="Nouveau Mot de passe" required="true">
                 <f:validateLength minimum="2" />      
             </p:password>
             <p:message for="newPassword"  />
@@ -36,7 +38,7 @@
             
  
             <p:outputLabel for="confmpassword" value="Confirme mot de passe:" />
-            <p:password id="confmpassword" value="#{beanUser.pass3}" label="Confirme mot de passe" required="true">
+            <p:password id="confmpassword" value="#{beanUser.pass3}" feedback="true" inline="true" label="Confirme mot de passe" required="true">
                 <f:validateLength minimum="2" />             
             </p:password>
             <p:message for="confmpassword"  />

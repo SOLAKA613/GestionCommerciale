@@ -17,30 +17,33 @@
   <ui:define name="content" size="75">
 	<h:form class="form">
 
-		<p:panel id="panel" header="Connecter" style="margin-left:450px;margin-top: 125px; width:500px;">
+		<p:panel id="panel" header="Connecter" style="margin-left:290px;margin-top: 125px; width:500px;">
 			<p:autoUpdate />
 			<p:messages id="msgs" />
 
 			<h:panelGrid columns="2" cellpadding="5">
-				<h:outputLabel for="username" value="Username:" />
+				<h:outputLabel for="username" value="Username:" >
+				<i class="fas fa-user"></i>
+				</h:outputLabel>
 				<p:inputText id="username" value="#{beanUser.login}" required="true"
 					label="username"
 					style="width:200px;margin-left:57px;margin-top:10px">
 					<p:keyFilter regEx="/[a-z0-9_]/i" />
 				</p:inputText>
-				<h:outputLabel for="password" value="Password:" />
+				<h:outputLabel for="password" value="Password:" >
+				<i class="fas fa-lock"></i>
+				</h:outputLabel>
 				<p:password id="password" value="#{beanUser.pass}" required="true"
 					label="password"
 					style="width:200px;margin-left:57px;margin-top:10px" />
 				<f:facet name="footer">
-				  <p:link outcome="RecupererPass" value="Mot de passe oublié ?" style="margin-left:120px;" /><br></br>
-					<p:commandButton value="Login" update="panel"
+					<p:commandButton icon="fas fa-check" value="Identifier" update="panel"
 						action="#{beanUser.login()}"
-						style="margin-left:120px;width:130px;margin-top:10px;margin-bottom:10px;" /><br></br>
+						style="font-size:12px;margin-left:164px;width:130px;margin-top:10px;margin-bottom:10px;" /><br></br>
 
 				</f:facet>
 				<f:facet name="footer">
-				   <p:link outcome="ModifierPass" value="Récupérer mot de passe" style="margin-left:123px;margin-top:10px;"/><br></br>
+				   <p:link outcome="RecupererPass" value="Mot de passe oublié ?" style="margin-left:170px;" /><br></br>
                 </f:facet>
 			</h:panelGrid>
 		</p:panel>

@@ -111,6 +111,15 @@ public class Users {
 	public void setPass(String pass) {
 		this.pass = pass;
 	}
+
+
+
+	@Override
+	public String toString() {
+		return "Users [codeUser=" + codeUser + ", firstname=" + firstname + ", lastname=" + lastname + ", phone="
+				+ phone + ", email=" + email + ", login=" + login + ", pass=" + pass + "]";
+	}
+	
 	
 	
 

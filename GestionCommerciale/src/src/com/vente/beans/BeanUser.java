@@ -1,5 +1,6 @@
 package src.com.vente.beans;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +27,10 @@ import src.com.vente.metiers.MetierUsers;
 @Component
 public class BeanUser {
 	
-	    @Autowired		
-	    MetierUsers metierUsers = new MetierUsers();
+	 @Autowired		
+	 MetierUsers metierUsers = new MetierUsers();
 	 
-	    Users newUser = new Users();
-	    
+	 private Users newUser = new Users();    
 	 private String firstname;
 	 private String lastname ;
 	 private String login;
@@ -43,93 +43,55 @@ public class BeanUser {
     public String getPass3() {
 		return pass3;
 	}
-
-
-
 	public void setPass3(String pass3) {
 		this.pass3 = pass3;
 	}
 
-
-
 	public String getPass2() {
 		return pass2;
 	}
-
-
-
 	public void setPass2(String pass2) {
 		this.pass2 = pass2;
 	}
 
-
-
 	public MetierUsers getMetierUsers() {
 		return metierUsers;
 	}
-
-
-
 	public void setMetierUsers(MetierUsers metierUsers) {
 		this.metierUsers = metierUsers;
 	}
 
-
-
 	public String getFirstname() {
 		return firstname;
 	}
-
-
-
 	public void setFirstname(String firstname) {
 		this.firstname = firstname;
 	}
 
-
-
 	public String getLastname() {
 		return lastname;
 	}
-
-
-
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
 
-
-
 	public String getPhone() {
 		return phone;
 	}
-
-
-
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 
-
-
 	public String getEmail() {
 		return email;
 	}
-
-
-
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
-
-
 	public String getLogin() {
 		return login;
 	}
-
-
-
 	public void setLogin(String login) {
 		this.login = login;
 	}
@@ -144,31 +106,26 @@ public class BeanUser {
 		this.pass = pass;
 	}
 	
-	
-	
 	public Users getNewUser() {
 		return newUser;
 	}
-
-
-
 	public void setNewUser(Users newUser) {
 		this.newUser = newUser;
 	}
 	
 	public void login() {
-		 List<Users> listUsers = metierUsers.findAll();
+		 
+	   List<Users> listUsers = metierUsers.findAll();
        FacesMessage message = null;
        boolean loggedIn = false;
        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
        
         for(Users p:listUsers) {
         	try {
-           if(login != null && login.equals(p.getLogin()) && login != null && pass.equals(p.getPass())) {
+       if(login != null && login.toLowerCase().equals(p.getLogin().toLowerCase()) && login != null && pass.equals(p.getPass())) {
            loggedIn = true;
            int id=p.getCodeUser();
-           ec.redirect(ec.getRequestContextPath()
-   	            + "/faces/listProduits.xhtml");
+           ec.redirect(ec.getRequestContextPath()+ "/faces/listProduits.xhtml");
            FacesContext context2 = FacesContext.getCurrentInstance();
            HttpSession session = (HttpSession) context2.getExternalContext().getSession(true);
            session.setAttribute("login", login);
@@ -178,7 +135,7 @@ public class BeanUser {
        } 
        else {
            loggedIn = false;
-           message = new FacesMessage(FacesMessage.SEVERITY_WARN, " Erreur : username ou password incorrect !", "");
+           message = new FacesMessage(FacesMessage.SEVERITY_ERROR, " Erreur : username ou password incorrect !", "");
        }
         } catch (Exception e) {
     	    //TODO Auto-generated catch block
@@ -191,26 +148,35 @@ public class BeanUser {
 	}
 	
 	public void changePass() {
+		 FacesContext context2 = FacesContext.getCurrentInstance();
+         HttpSession session = (HttpSession) context2.getExternalContext().getSession(true);
 		 List<Users> listUsers = metierUsers.findAll();
-		 
-		 FacesMessage message = null;
+		 int j=0;
+		 Users user=new Users();
+		 String password=(String) session.getAttribute("pass");
       for(Users p:listUsers) {
         	
-       if(pass != null && pass.equals(p.getPass()) && pass2 != null && pass2.equals(pass3)) {
-           
-           p.setPass(pass2);
-           metierUsers.update(p);
-           
-           message = new FacesMessage( " Mot de pass est modifier avec succes");
+       if(pass != null && pass.equals(p.getPass()) && pass.equals(password)) {
+          j=1;
+          user=p;
+          
+          break;
        } 
-       else {
-           
-           
-           message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Mot de passe incorrect", "");
-       }
-        
+         
+      }
+      if(j==1) {
+        if(pass2 != null && pass3 != null && pass2.equals(pass3)) {
+    	  user.setPass(pass2);
+          metierUsers.update(user);
+          
+          addMessageSucces( " Mot de passe est modifier avec succes");
+   	    }else {         
+    	  addMessage("Erreur: Les deux mots de passe ne sont pas compatible.");
         }
-      FacesContext.getCurrentInstance().addMessage(null, message);
+      }else{
+    	  addMessage("Erreur: Mot de passe incorrect");
+	   }
+      
 	}
 	
 	
@@ -222,31 +188,49 @@ public class BeanUser {
 		 FacesMessage message = null;
      for(Users p:listUsers) {
        	
-      if(email != null && email.equals(p.getEmail())) {
+      if(email != null && email.toLowerCase().equals(p.getEmail().toLowerCase())) {
           
          String pssword = p.getPass();
          String firstmane = p.getFirstname();
          
-          message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bonjour` "+firstmane+" Votre mot de passe est "+ pssword,"");
+          message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bonjour "+firstmane+" Votre mot de passe est "+ pssword,"");
       } 
       else {
           
           
-          message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Error : Votre email incorrect","");
+          message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error : Votre email incorrect","");
       }
        
        }
      FacesContext.getCurrentInstance().addMessage(null, message);
 	}
 	
-    public void save() {
+    public void save() throws IOException {
+    	List<Users> listUsers = metierUsers.findAll();
+		ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+		FacesContext context2 = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) context2.getExternalContext().getSession(true);
+		int id=0;
 		
-		FacesContext context = FacesContext.getCurrentInstance();
+		for(Users p:listUsers) {
+			if(p.getEmail().toLowerCase().equals(getNewUser().getEmail().toLowerCase())) {
+				addMessage( "Error : Ce mail déjà existe .Entrer un nouveau émail différent");
+			    break;
+			}
+		}
 		
-		
-		    metierUsers.create(newUser);
-			context.addMessage(null, new FacesMessage("Successful Client ajoute avec succes.") );
-				
+		if(metierUsers.create(newUser)) {			      
+          for(Users user: metierUsers.findAll()) {
+        	if(user.getLogin().equals(newUser.getLogin()) && user.getPass().equals(newUser.getPass())) {
+        		id=user.getCodeUser();
+        		break;
+        	}
+          }
+		}
+		session.setAttribute("login", newUser.getLogin());
+        session.setAttribute("pass", newUser.getPass());
+        session.setAttribute("id", id);
+        ec.redirect(ec.getRequestContextPath()+ "/faces/listProduits.xhtml");
 			
 	}
     
@@ -255,7 +239,17 @@ public class BeanUser {
 	   ExternalContext ec = context.getExternalContext();
 	   final HttpServletRequest request = (HttpServletRequest) ec.getRequest();
 	   request.getSession(false).invalidate();
-            return "Login";
+            return "Accueil";
 	}
+    
+    public void addMessage(String summary) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+    
+    public void addMessageSucces(String summary) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
 
 }

@@ -18,7 +18,7 @@
 					<textElement>
 						<font size="34" isBold="true"/>
 					</textElement>
-					<text><![CDATA[TECHNO]]></text>
+					<text><![CDATA[OnlineShop]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="280" y="43" width="294" height="20" forecolor="#FFFFFF" uuid="8d7de8a5-5125-48dd-8f7d-408e71e5be42"/>
