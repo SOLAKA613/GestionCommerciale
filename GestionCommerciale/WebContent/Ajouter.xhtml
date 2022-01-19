@@ -26,10 +26,9 @@
  <ui:composition template="/WEB-INF/template/template1.xhtml">
   <ui:define name="content" size="75">
    <h:form  class="form" >
+     
     <p:panel id="panel" header="Ajouter un utilisateur" style="width: 751px;margin-left: 153px;height:470px;">
- 
-        <p:messages id="msgs" />
-        
+          <p:growl id="growl" life="4000" />
         <h:panelGrid columns="3" cellpadding="5" style="margin-top:30px">
         
             <p:outputLabel for="name" value="Nom:"  />

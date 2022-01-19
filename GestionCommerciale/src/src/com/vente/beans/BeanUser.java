@@ -167,6 +167,7 @@ public class BeanUser {
       if(j==1) {
         if(pass2 != null && pass3 != null && pass2.equals(pass3)) {
     	  user.setPass(pass2);
+    	  session.setAttribute("pass", pass2);
           metierUsers.update(user);
           
           addMessageSucces( " Mot de passe est modifier avec succes");
@@ -210,36 +211,38 @@ public class BeanUser {
 		ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
 		FacesContext context2 = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) context2.getExternalContext().getSession(true);
-		int id=0;
+		int id=0,j=0;
 		
 		for(Users p:listUsers) {
 			if(p.getEmail().toLowerCase().equals(getNewUser().getEmail().toLowerCase())) {
 				addMessage( "Error : Ce mail déjà existe .Entrer un nouveau émail différent");
+			    j=1;
 			    break;
 			}
 		}
 		
-		if(metierUsers.create(newUser)) {			      
+		if(j==0 && metierUsers.create(newUser)) {			      
           for(Users user: metierUsers.findAll()) {
         	if(user.getLogin().equals(newUser.getLogin()) && user.getPass().equals(newUser.getPass())) {
         		id=user.getCodeUser();
         		break;
         	}
           }
+          session.setAttribute("login", newUser.getLogin());
+          session.setAttribute("pass", newUser.getPass());
+          session.setAttribute("id", id);
+          ec.redirect(ec.getRequestContextPath()+ "/faces/listProduits.xhtml");
 		}
-		session.setAttribute("login", newUser.getLogin());
-        session.setAttribute("pass", newUser.getPass());
-        session.setAttribute("id", id);
-        ec.redirect(ec.getRequestContextPath()+ "/faces/listProduits.xhtml");
 			
 	}
     
-    public String logout(){
+    public void logout() throws IOException{
 	   FacesContext context = FacesContext.getCurrentInstance();
+	   HttpSession session = (HttpSession) context.getExternalContext().getSession(true);
 	   ExternalContext ec = context.getExternalContext();
 	   final HttpServletRequest request = (HttpServletRequest) ec.getRequest();
-	   request.getSession(false).invalidate();
-            return "Accueil";
+	   session.setAttribute("login", null);
+	   ec.redirect(ec.getRequestContextPath()+ "/faces/Accueil.xhtml");
 	}
     
     public void addMessage(String summary) {
