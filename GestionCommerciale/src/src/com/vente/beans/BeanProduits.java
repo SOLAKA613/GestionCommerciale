@@ -268,7 +268,7 @@ public class BeanProduits {
 				addMessageSucces("Votre opération s'est terminée avec succès.Vos articles vous parviendra dans 30 jours");
 				
 			  }else {
-				  addMessage(".Le mot de passe et le nom d'utilisateur que vous avez entrés ne correspondent pas au mot de passe et au nom d'utilisateur avec lesquels vous vous connectez.");
+				  addMessage("Le mot de passe et le nom d'utilisateur que vous avez entrés ne correspondent pas au mot de passe et au nom d'utilisateur avec lesquels vous vous connectez.");
 			  }	
 			}else {
 				addMessage("Votre password ou username est incorrect");
